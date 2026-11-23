@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 enum Eyes { dots, closed, sad, worried }
 enum Mouth {open, smile, bigSmile, frown, wavy }
