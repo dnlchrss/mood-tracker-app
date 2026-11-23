@@ -13,13 +13,25 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100)
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
           children: [
             const HomeHeader(name: userName),
-            const SizedBox(height: 16)
+            const SizedBox(height: 16),
             const StreakChip(days: streakDays),
             const SizedBox(height: 24),
-            for (final s in sections)
-          ]
-        ),)
+            for (final s in sections) MoodSectionsView(section: s),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //TODO: Navigator.push ke halaman tambah mood
+        }
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, size: 30),
+      ),
+    );
+  }
 }
