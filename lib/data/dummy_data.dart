@@ -1,16 +1,17 @@
 import '../models/mood.dart';
 
-const userName = 'Christo';
+const userName = 'Christoo';
 const streakDays = 5;
 
-const sections = [
-  MoodSection('Hari ini', [
-    MoodEntry(MoodType.cemas, '09:00', 'Nilai UTS udah dirilis tapi blom liat'),
-    MoodEntry(MoodType.tenang, '15:30', 'besoknya libur'),
-    MoodEntry(MoodType.senang, '18:00', 'Makan enak di rumah'),
-  ]),
-  MoodSection('Kemarin', [
-    MoodEntry(MoodType.sedih, '10:00', 'Dapet nilai jelek di quiz DDP'),
-    MoodEntry(MoodType.bersemangat, '15:30', 'Nonton film'),
-  ]),
+DateTime _at(int daysAgo, int h, int m) {
+  final n = DateTime.now();
+  return DateTime(n.year, n.month, n.day - daysAgo, h, m);
+}
+
+final initialEntries = [
+  MoodEntry(MoodType.bersemangat, _at(0, 14, 20), 'GTA VI rilis'),
+  MoodEntry(MoodType.tenang, _at(0, 11, 0), 'Besok ga ada quiz'),
+  MoodEntry(MoodType.senang, _at(0, 8, 30), 'Nilai quiz DDP bagus'),
+  MoodEntry(MoodType.sedih, _at(1, 20, 15), 'Interet lemot'),
+  MoodEntry(MoodType.cemas, _at(1, 9, 0), 'Tugas kuliah banyak'),
 ];
