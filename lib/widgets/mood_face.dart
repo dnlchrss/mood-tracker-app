@@ -5,19 +5,26 @@ import '../theme/app_colors.dart';
 class MoodFace extends StatelessWidget {
   final MoodType type;
   final double size;
+  final bool showBody;
 
-  const MoodFace({super.key, required this.type, this.size = 52});
+  const MoodFace({
+    super.key,
+    required this.type,
+    this.size = 52,
+    this.showBody = true,
+  });
 
   @override
   Widget build(BuildContext context) => CustomPaint(
         size: Size.square(size),
-        painter: _FacePainter(type),
+        painter: _FacePainter(type, showBody),
       );
 }
 
 class _FacePainter extends CustomPainter {
   final MoodType type;
-  _FacePainter(this.type);
+  final bool showBody;
+  _FacePainter(this.type, this.showBody);
 
   @override
   void paint(Canvas canvas, Size s) {
@@ -31,20 +38,26 @@ class _FacePainter extends CustomPainter {
       ..strokeWidth = w * 0.05
       ..strokeCap = StrokeCap.round;
 
+    // Helper: kurva dari (ax, ay) ke (bx, by) lewat titik kontrol (cx, cy).
+    // Semua koordinat 0..1 relatif terhadap ukuran wajah.
     Path curve(double ax, double ay, double cx, double cy, double bx, double by) =>
         Path()
           ..moveTo(w * ax, h * ay)
           ..quadraticBezierTo(w * cx, h * cy, w * bx, h * by);
 
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Offset.zero & s, Radius.circular(w * 0.42)),
-      Paint()..color = type.color,
-    );
-    canvas.drawCircle(
-        Offset(w * 0.8, h * 0.17), w * 0.03, Paint()..color = Colors.white70);
+    // Badan + kilau
+    if (showBody) {
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(Offset.zero & s, Radius.circular(w * 0.42)),
+        Paint()..color = type.color,
+      );
+      canvas.drawCircle(
+          Offset(w * 0.8, h * 0.17), w * 0.03, Paint()..color = Colors.white70);
+    }
 
+    // Mata
     for (final x in [0.33, 0.67]) {
-      final dir = x < 0.5 ? 1 : -1; // arah alis untuk mata cemas
+      final dir = x < 0.5 ? 1 : -1; // arah alis
       switch (type.eyes) {
         case Eyes.dots:
           canvas.drawCircle(Offset(w * x, h * 0.42), w * 0.06, fill);
@@ -59,9 +72,17 @@ class _FacePainter extends CustomPainter {
             Offset(w * (x + 0.07 * dir), h * 0.26),
             line,
           );
+        case Eyes.angry:
+          canvas.drawCircle(Offset(w * x, h * 0.45), w * 0.05, fill);
+          canvas.drawLine(
+            Offset(w * (x - 0.09 * dir), h * 0.3),
+            Offset(w * (x + 0.09 * dir), h * 0.37),
+            line,
+          );
       }
     }
 
+    // Mulut
     switch (type.mouth) {
       case Mouth.open:
         canvas.drawOval(
@@ -86,6 +107,7 @@ class _FacePainter extends CustomPainter {
         );
     }
 
+    // Air mata (opsional)
     if (type.tear) {
       canvas.drawOval(
         Rect.fromCenter(
@@ -96,5 +118,6 @@ class _FacePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _FacePainter old) => old.type != type;
+  bool shouldRepaint(covariant _FacePainter old) =>
+      old.type != type || old.showBody != showBody;
 }

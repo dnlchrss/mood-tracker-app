@@ -5,8 +5,9 @@ import 'mood_card.dart';
 
 class MoodSectionView extends StatelessWidget {
   final MoodSection section;
+  final ValueChanged<MoodEntry>? onEntryTap;
 
-  const MoodSectionView({super.key, required this.section});
+  const MoodSectionView({super.key, required this.section, this.onEntryTap});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -25,7 +26,8 @@ class MoodSectionView extends StatelessWidget {
                 ),
               ),
             ),
-            for (final e in section.entries) MoodCard(entry: e),
+            for (final e in section.entries)
+              MoodCard(entry: e, onTap: () => onEntryTap?.call(e)),
           ],
         ),
       );
