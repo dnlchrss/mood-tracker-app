@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../data/dummy_data.dart';
 import '../theme/app_colors.dart';
 import '../widgets/home_header.dart';
-import '../widgets/mood_selection_view.dart';
+import '../widgets/mood_section_view.dart';
 import '../widgets/streak_chip.dart';
 
 class HomePage extends StatelessWidget {
@@ -19,13 +19,13 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 16),
             const StreakChip(days: streakDays),
             const SizedBox(height: 24),
-            for (final s in sections) MoodSectionsView(section: s),
+            for (final s in sections) MoodSectionView(section: s),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //TODO: Navigator.push ke halaman tambah mood
+          //Pindah ke halaman mood entry baru
         }
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
